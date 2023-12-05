@@ -3,6 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 
+
 const SocialLogin = () => {
     const { googleSignIn } = useAuth();
     const axiosPublic = useAxiosPublic();
@@ -10,28 +11,25 @@ const SocialLogin = () => {
 
     const handleGoogleSignIn = () => {
         googleSignIn()
-        .then(res => {
-            console.log(res.user);
-            const userInfo = {
-                email: res.user?.email,
-                name: res.user?.displayName
-            }
-            axiosPublic.post('/users', userInfo)
-            .then(res => {
-                console.log(res.data);
-                navigate('/');
+            .then(result => {
+                console.log(result.user);
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data);
+                        navigate('/');
+                    })
             })
-        })
-        .catch(err => {
-            console.log(err);
-        })
     }
 
     return (
-        <div>
-            <div className='divider'></div>
-            <div className="px-8 pb-8">
-                <button onClick={handleGoogleSignIn} className="btn btn-neutral">
+        <div className="p-8">
+            <div className="divider"></div>
+            <div>
+                <button onClick={handleGoogleSignIn} className="btn">
                     <FaGoogle className="mr-2"></FaGoogle>
                     Google
                 </button>
